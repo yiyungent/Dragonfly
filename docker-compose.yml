@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  webscreenshot:
+    image: ${DOCKER_REGISTRY-}webscreenshot
+    build:
+      context: .
+      dockerfile: src/WebScreenshot/Dockerfile
