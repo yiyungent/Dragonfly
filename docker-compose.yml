@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  webscreenshot:
-    image: ${DOCKER_REGISTRY-}webscreenshot
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
     build:
       context: .
-      dockerfile: src/WebScreenshot/Dockerfile
+      dockerfile: src/WebApi/Dockerfile

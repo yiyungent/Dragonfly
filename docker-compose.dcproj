@@ -6,7 +6,7 @@
     <ProjectGuid>17135363-8ee4-41a3-a3bb-c1c6780dc960</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>webscreenshot</DockerServiceName>
+    <DockerServiceName>webapi</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

@@ -36,17 +36,17 @@ RUN chmod +x ./railway-entrypoint.sh
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/WebScreenshot/WebScreenshot.csproj", "src/WebScreenshot/"]
-RUN dotnet restore "src/WebScreenshot/WebScreenshot.csproj"
+COPY ["src/WebApi/WebApi.csproj", "src/WebApi/"]
+RUN dotnet restore "src/WebApi/WebApi.csproj"
 COPY . .
-WORKDIR "/src/src/WebScreenshot"
-RUN dotnet build "WebScreenshot.csproj" -c Release -o /app/build
+WORKDIR "/src/src/WebApi"
+RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "WebScreenshot.csproj" -c Release -o /app/publish
+RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "WebScreenshot.dll"]
+#ENTRYPOINT ["dotnet", "WebApi.dll"]
 ENTRYPOINT ["/bin/sh", "./railway-entrypoint.sh"]
