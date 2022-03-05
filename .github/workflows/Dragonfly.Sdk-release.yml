@@ -1,0 +1,49 @@
+name: Dragonfly.Sdk Release
+
+on: 
+  push:
+    tags:
+      - 'Dragonfly.Sdk-v*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.102
+        
+    - name: Build
+      run: |
+        cd ./src/Dragonfly.Sdk
+        dotnet build --configuration Release
+        ls
+        ls ./bin/Release/
+      
+    - name: Zip the Build
+      run: |
+        cd ./src/Dragonfly.Sdk/bin/Release
+        zip -r Dragonfly.Sdk-netstandard2.0.zip ./netstandard2.0/ 
+        cd ../../../../
+        mv ./src/Dragonfly.Sdk/bin/Release/*.zip ./
+      
+    - name: Create Release and Upload Release Asset
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        #tag_name: ${{ github.ref }}
+        #name: ${{ github.ref }}
+        body: TODO New Release.
+        #body_path: CHANGELOG.txt
+        draft: false
+        prerelease: false
+        files: |
+          Dragonfly.Sdk-netstandard2.0.zip
+          LICENSE 
+          README.md

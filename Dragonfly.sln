@@ -9,11 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A0A97548-E45
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{17135363-8EE4-41A3-A3BB-C1C6780DC960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dragonfly.Sdk", "src\Dragonfly.Sdk\Dragonfly.Sdk.csproj", "{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dragonfly.Sdk", "src\Dragonfly.Sdk\Dragonfly.Sdk.csproj", "{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginCore", "src\PluginCore\src\PluginCore\PluginCore.csproj", "{596BEB61-603A-48B9-8FCD-651112A40C39}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginCore.IPlugins", "src\PluginCore\src\PluginCore.IPlugins\PluginCore.IPlugins.csproj", "{0635DB2C-D821-4F45-8E60-95006DA85BFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{5EB4F597-C2A3-414F-9F84-07A6375F12DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
