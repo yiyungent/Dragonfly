@@ -43,8 +43,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/WebApi/WebApi.csproj", "src/WebApi/"]
 COPY ["src/Dragonfly.Sdk/Dragonfly.Sdk.csproj", "src/Dragonfly.Sdk/"]
-COPY ["src/PluginCore/src/PluginCore/PluginCore.csproj", "src/PluginCore/src/PluginCore/"]
-COPY ["src/PluginCore/src/PluginCore.IPlugins/PluginCore.IPlugins.csproj", "src/PluginCore/src/PluginCore.IPlugins/"]
+#COPY ["src/PluginCore/src/PluginCore/PluginCore.csproj", "src/PluginCore/src/PluginCore/"]
+#COPY ["src/PluginCore/src/PluginCore.IPlugins/PluginCore.IPlugins.csproj", "src/PluginCore/src/PluginCore.IPlugins/"]
 RUN dotnet restore "src/WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/WebApi"
