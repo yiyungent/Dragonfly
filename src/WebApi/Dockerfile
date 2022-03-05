@@ -22,8 +22,8 @@ RUN mv chromedriver /app/chromedriver
 WORKDIR /app
 # 为所有用户添加可执行权限 (对chromedriver文件)
 RUN chmod a+x chromedriver
-RUN echo 'export PATH=$PATH:/app' >> ~/.bash_profile && \
-    source ~/.bash_profile
+RUN echo 'export PATH=$PATH:/app' >> ~/.bash_profile
+RUN /bin/bash -c "source ~/.bash_profile"
 # 效验版本
 RUN google-chrome --version
 RUN chromedriver --version
