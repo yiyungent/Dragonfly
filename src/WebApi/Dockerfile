@@ -3,29 +3,38 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-# ×¢Òâ: ÒÔÏÂ ÎªÁËÊ¹ÓÃ Selenium
-# ¸´ÖÆ tools/selenium/ ÎÄ¼ş¼ĞÏÂµÄÎÄ¼şµ½ ./tools/selenium/ ¼´ /app/tools/selenium/
+# start Selenium
+# æ³¨æ„: ä»¥ä¸‹ ä¸ºäº†ä½¿ç”¨ Selenium
+# å¤åˆ¶ tools/selenium/ æ–‡ä»¶å¤¹ä¸‹çš„æ–‡ä»¶åˆ° ./tools/selenium/ å³ /app/tools/selenium/
 COPY tools/selenium/ ./tools/selenium/
 RUN apt update
 RUN apt-get install unzip
 RUN apt-get install gdebi-core -y
 WORKDIR /app/tools/selenium
-# °²×° Chrome
-# ×¢Òâ: Chrome °æ±¾±ØĞëÓë chromedriver °æ±¾¶ÔÓ¦
-# °²×° google-chrome*.deb °üÒÀÀµ
-# ×¢Òâ: gdebi Ã»ÓĞ -y, Ê¹ÓÃ -n ´úÌæ
+# å®‰è£… Chrome
+# æ³¨æ„: Chrome ç‰ˆæœ¬å¿…é¡»ä¸ chromedriver ç‰ˆæœ¬å¯¹åº”
+# å®‰è£… google-chrome*.deb åŒ…ä¾èµ–
+# æ³¨æ„: gdebi æ²¡æœ‰ -y, ä½¿ç”¨ -n ä»£æ›¿
 RUN gdebi -n google-chrome*.deb
-# °²×° chromedriver
+# å®‰è£… chromedriver
 RUN unzip chromedriver_linux64.zip
-# ÎªËùÓĞÓÃ»§Ìí¼Ó¿ÉÖ´ĞĞÈ¨ÏŞ (¶ÔchromedriverÎÄ¼ş)
+RUN mv chromedriver /app/chromedriver
+WORKDIR /app
+# ä¸ºæ‰€æœ‰ç”¨æˆ·æ·»åŠ å¯æ‰§è¡Œæƒé™ (å¯¹chromedriveræ–‡ä»¶)
 RUN chmod a+x chromedriver
-# ÏÂÃæÁ½ĞĞ°²×°ÖĞÎÄ×ÖÌå
+RUN echo 'export PATH=$PATH:/app' >> ~/.bash_profile && \
+    source ~/.bash_profile
+# æ•ˆéªŒç‰ˆæœ¬
+RUN google-chrome --version
+RUN chromedriver --version
+# ä¸‹é¢ä¸¤è¡Œå®‰è£…ä¸­æ–‡å­—ä½“
 RUN apt install -y --force-yes --no-install-recommends fonts-wqy-microhei
 RUN apt install -y --force-yes --no-install-recommends ttf-wqy-zenhei
-# ÒÔÏÂ°²×° Selenium WebDriver ĞèÒªµÄÒÀÀµ
+# ä»¥ä¸‹å®‰è£… Selenium WebDriver éœ€è¦çš„ä¾èµ–
 RUN apt-get install libglib2.0 -y
 RUN apt-get install libnss3-dev -y
 RUN apt-get install libxcb1 -y
+# end Selenium
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src

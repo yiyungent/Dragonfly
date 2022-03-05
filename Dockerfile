@@ -6,6 +6,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
+# start Selenium
 # 注意: 以下 为了使用 Selenium
 # 复制 tools/selenium/ 文件夹下的文件到 ./tools/selenium/ 即 /app/tools/selenium/
 COPY tools/selenium/ ./tools/selenium/
@@ -20,8 +21,15 @@ WORKDIR /app/tools/selenium
 RUN gdebi -n google-chrome*.deb
 # 安装 chromedriver
 RUN unzip chromedriver_linux64.zip
+RUN mv chromedriver /app/chromedriver
+WORKDIR /app
 # 为所有用户添加可执行权限 (对chromedriver文件)
 RUN chmod a+x chromedriver
+RUN echo 'export PATH=$PATH:/app' >> ~/.bash_profile && \
+    source ~/.bash_profile
+# 效验版本
+RUN google-chrome --version
+RUN chromedriver --version
 # 下面两行安装中文字体
 RUN apt install -y --force-yes --no-install-recommends fonts-wqy-microhei
 RUN apt install -y --force-yes --no-install-recommends ttf-wqy-zenhei
@@ -29,10 +37,12 @@ RUN apt install -y --force-yes --no-install-recommends ttf-wqy-zenhei
 RUN apt-get install libglib2.0 -y
 RUN apt-get install libnss3-dev -y
 RUN apt-get install libxcb1 -y
-# for Railway
+# end Selenium
+# start Railway
 WORKDIR /app
 ADD railway-entrypoint.sh ./railway-entrypoint.sh
 RUN chmod +x ./railway-entrypoint.sh
+# end Railway
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
