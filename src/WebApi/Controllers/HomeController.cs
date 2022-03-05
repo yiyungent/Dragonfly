@@ -92,7 +92,7 @@ namespace WebApi.Controllers
                 // 合法 jsurl
                 try
                 {
-                    jsStr = Utils.HttpUtil.HttpGet(url: jsurl);
+                    jsStr = Dragonfly.Sdk.Utils.HttpUtil.HttpGet(url: jsurl);
                 }
                 catch (Exception ex)
                 {
@@ -149,7 +149,7 @@ namespace WebApi.Controllers
             Console.WriteLine($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} FileCache: {key}");
 
             #region Cache 控制
-            string screenshotCacheKey = Utils.Md5Util.MD5Encrypt32($"{CacheKeys.Entry}_{key}");
+            string screenshotCacheKey = Dragonfly.Sdk.Utils.Md5Util.MD5Encrypt32($"{CacheKeys.Entry}_{key}");
             string screenshotCacheFileDir = Path.Combine(Directory.GetCurrentDirectory(), "FileCache");
             if (!Directory.Exists(screenshotCacheFileDir))
             {

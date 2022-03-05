@@ -11,6 +11,10 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dragonfly.Sdk", "src\Dragonfly.Sdk\Dragonfly.Sdk.csproj", "{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginCore", "src\PluginCore\src\PluginCore\PluginCore.csproj", "{596BEB61-603A-48B9-8FCD-651112A40C39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginCore.IPlugins", "src\PluginCore\src\PluginCore.IPlugins\PluginCore.IPlugins.csproj", "{0635DB2C-D821-4F45-8E60-95006DA85BFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{596BEB61-603A-48B9-8FCD-651112A40C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{596BEB61-603A-48B9-8FCD-651112A40C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{596BEB61-603A-48B9-8FCD-651112A40C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{596BEB61-603A-48B9-8FCD-651112A40C39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +48,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1C2E7A8D-9F9C-4AB4-A4ED-7BA911CE82B8} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
 		{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
+		{596BEB61-603A-48B9-8FCD-651112A40C39} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
+		{0635DB2C-D821-4F45-8E60-95006DA85BFA} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E2FCE13-4DE4-4BF3-A2BD-099409507D64}

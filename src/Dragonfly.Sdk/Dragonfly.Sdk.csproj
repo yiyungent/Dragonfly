@@ -14,6 +14,14 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
+	<!-- 方便开发debug,与发布到nuget -->
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="PluginCore.IPlugins" Version="0.7.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<ProjectReference Include="..\PluginCore\src\PluginCore.IPlugins\PluginCore.IPlugins.csproj" />
+	</ItemGroup>
+
 	<!-- 生成注释xml -->
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
 		<DocumentationFile>bin\Release\netstandard2.0\Dragonfly.Sdk.xml</DocumentationFile>
