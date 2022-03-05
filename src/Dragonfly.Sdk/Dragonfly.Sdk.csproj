@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageId>Dragonfly.Sdk</PackageId>
+		<Version>0.1.0</Version>
+		<Company>yiyun</Company>
+		<Authors>yiyun</Authors>
+		<Description>Dragonfly 插件开发包</Description>
+		<Copyright>Copyright (c) 2022-present yiyun</Copyright>
+		<RepositoryUrl>https://github.com/yiyungent/Dragonfly</RepositoryUrl>
+		<PackageLicenseUrl>https://github.com/yiyungent/Dragonfly/blob/main/LICENSE</PackageLicenseUrl>
+		<PackageTags>Dragonfly Dragonfly.Sdk</PackageTags>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
+
+	<!-- 生成注释xml -->
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+		<DocumentationFile>bin\Release\netstandard2.0\Dragonfly.Sdk.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+	</ItemGroup>
+
+</Project>

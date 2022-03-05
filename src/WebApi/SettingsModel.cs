@@ -1,4 +1,4 @@
-﻿namespace WebScreenshot
+﻿namespace WebApi
 {
     public class SettingsModel
     {

@@ -7,7 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace WebScreenshot.Controllers
+namespace WebApi.Controllers
 {
     // 注意: 不能使用 [ApiController] + ControllerBase, 因为不支持 Controller.Action 可选参数 ( string jsurl = "" ), 始终会返回 json 格式的错误信息
 

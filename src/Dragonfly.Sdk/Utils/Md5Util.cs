@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WebScreenshot.Utils
+namespace Dragonfly.Sdk.Utils
 {
     public class Md5Util
     {

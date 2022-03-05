@@ -8,7 +8,7 @@ using System.Text;
 // https://github.com/yiyungent/SimCaptcha
 // Author: yiyun <yiyungent@gmail.com>
 
-namespace WebScreenshot.Utils
+namespace Dragonfly.Sdk.Utils
 {
     /// <summary>
     /// HTTP助手
