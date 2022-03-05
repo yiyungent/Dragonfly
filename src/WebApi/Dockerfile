@@ -22,8 +22,11 @@ RUN mv chromedriver /app/chromedriver
 WORKDIR /app
 # 为所有用户添加可执行权限 (对chromedriver文件)
 RUN chmod a+x chromedriver
+# TODO: 以下添加 PATH 失败
 RUN echo 'export PATH=$PATH:/app' >> ~/.bash_profile
 RUN /bin/bash -c "source ~/.bash_profile"
+# 使用 Dockerfile 方式 添加 PATH
+ENV PATH=/app:$PATH
 # 效验版本
 RUN google-chrome --version
 RUN chromedriver --version
