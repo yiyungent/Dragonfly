@@ -1,0 +1,22 @@
+{
+	"SecondsPeriod": 60,
+	"Mail": {
+		"SMTPHost": "",
+		"UerName": "",
+		"Password": "",
+		"Port": 465,
+		"EnableSsl": true,
+		"SenderDisplayAddress": "",
+		"SenderDisplayName": ""
+	},
+	"Tasks": [
+		{
+			"Message": "",
+			"Url": "",
+			"JavaScriptCondition": "",
+			"ForceWait": 60,
+			"Enable": false,
+			"ReceiveMail": ""
+		}
+	]
+}

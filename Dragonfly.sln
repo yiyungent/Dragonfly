@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginCore.IPlugins", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{5EB4F597-C2A3-414F-9F84-07A6375F12DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMonitorPlugin", "plugins\WebMonitorPlugin\WebMonitorPlugin.csproj", "{9A3AEF50-3334-4B71-ABFA-4D0B8AC53838}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0635DB2C-D821-4F45-8E60-95006DA85BFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A3AEF50-3334-4B71-ABFA-4D0B8AC53838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A3AEF50-3334-4B71-ABFA-4D0B8AC53838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A3AEF50-3334-4B71-ABFA-4D0B8AC53838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A3AEF50-3334-4B71-ABFA-4D0B8AC53838}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{5F8B5BCF-0C5B-4C86-ABB7-5E1FA9CB6FA0} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
 		{596BEB61-603A-48B9-8FCD-651112A40C39} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
 		{0635DB2C-D821-4F45-8E60-95006DA85BFA} = {A0A97548-E45B-4406-ACE9-D78A6EFE19D9}
+		{9A3AEF50-3334-4B71-ABFA-4D0B8AC53838} = {5EB4F597-C2A3-414F-9F84-07A6375F12DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E2FCE13-4DE4-4BF3-A2BD-099409507D64}
