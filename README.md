@@ -21,10 +21,47 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 ## Quick Start
 
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https%3A%2F%2Fgithub.com%2Fyiyungent%2FDragonfly&referralCode=8eKBDA)
+### 方式1: 使用 Railway 免费部署 
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?code=JQuUBW&referralCode=8eKBDA)
 
 
-## Demo
+### Railway 环境变量
+
+| 环境变量名称                | 必填 | 备注                    |
+| --------------------------- | ---- | ----------------------- |
+| `PLUGINCORE_ADMIN_USERNAME` | √    | PluginCore Admin 用户名 |
+| `PLUGINCORE_ADMIN_PASSWORD` | √    | PluginCore Admin 密码   |
+
+
+> 注意: Railway 重新 Deploy 后会删除数据, 你安装的所有插件及数据都将清空。
+
+### 方式2: 使用 Docker
+
+```bash
+git clone git@github.com:yiyungent/Dragonfly.git
+
+docker build -t yiyungent/dragonfly -f src/Dragonfly/Dockerfile .
+
+docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --name dragonfly yiyungent/dragonfly
+```
+
+
+## 插件开发
+
+> 插件开发 可参考:   
+> - [插件开发 | PluginCore](https://moeci.com/PluginCore/zh/PluginDev/Guide/)
+
+> Dragonfly 插件开发包  
+> 插件开发包中已包含:   
+> - `Selenium.WebDriver`
+> - `PluginCore.IPlugins`
+
+```powershell
+dotnet add package Dragonfly.Sdk
+```
+
+
 
 
 
