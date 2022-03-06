@@ -39,7 +39,10 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 ### 方式2: 使用 Docker
 
 ```bash
+# 获取源代码: 方式1: ssh 
 git clone git@github.com:yiyungent/Dragonfly.git
+# 获取源代码: 方式2: https 
+git clone https://github.com/yiyungent/Dragonfly.git
 
 docker build -t yiyungent/dragonfly -f src/Dragonfly/Dockerfile .
 
