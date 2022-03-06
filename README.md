@@ -12,6 +12,11 @@
 
 ASP.NET Core + Selenium 实现 Web 自动化平台
 
+- **开箱即用** - 完全打包好的 `Selenium` 环境
+- **易扩展** - 集成 `PluginCore`, 插件化架构
+
+
+
 
 ## Quick Start
 
@@ -21,7 +26,7 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 
 ## Demo
 
-- https://dragonfly.up.railway.app/?url=https://moeci.com
+
 
 
 

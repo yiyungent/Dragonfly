@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "WebScreenshot": {
+    "WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
