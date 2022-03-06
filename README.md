@@ -44,7 +44,9 @@ git clone git@github.com:yiyungent/Dragonfly.git
 # 获取源代码: 方式2: https 
 git clone https://github.com/yiyungent/Dragonfly.git
 
-docker build -t yiyungent/dragonfly -f src/Dragonfly/Dockerfile .
+cd Dragonfly
+
+docker build -t yiyungent/dragonfly -f src/WebApi/Dockerfile .
 
 docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --name dragonfly yiyungent/dragonfly
 ```
