@@ -26,7 +26,7 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?code=JQuUBW&referralCode=8eKBDA)
 
 
-### Railway 环境变量
+#### Railway 环境变量
 
 | 环境变量名称                | 必填 | 备注                    |
 | --------------------------- | ---- | ----------------------- |
@@ -36,7 +36,19 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 
 > 注意: Railway 重新 Deploy 后会删除数据, 你安装的所有插件及数据都将清空。
 
-### 方式2: 使用 Docker
+### 方式2: 使用 Heroku 免费部署
+
+[![Deploy on Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yiyungent/Dragonfly)
+
+#### Heroku 环境变量
+
+| 环境变量名称                | 必填 | 备注                    |
+| --------------------------- | ---- | ----------------------- |
+| `PLUGINCORE_ADMIN_USERNAME` | √    | PluginCore Admin 用户名 |
+| `PLUGINCORE_ADMIN_PASSWORD` | √    | PluginCore Admin 密码   |
+
+
+### 方式3: 使用 Docker
 
 ```bash
 # 获取源代码: 方式1: ssh 
