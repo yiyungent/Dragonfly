@@ -9,6 +9,11 @@ namespace WebMonitorPlugin.Utils
     {
         public static bool SendMail(MailOptions options, out string errorMsg)
         {
+            // System.IO.IOException: Unable to read data from the transport connection: The connection was closed.
+            // https://stackoverflow.com/questions/62883394/how-to-fix-system-io-ioexception-unable-to-read-data-from-the-transport-connec
+            // 失败
+            //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+
             //声明一个Mail对象
             MailMessage mailMessage = new MailMessage();
             // 发件人地址
@@ -54,6 +59,7 @@ namespace WebMonitorPlugin.Utils
             // SMTP服务端口
             smtpClient.Port = options.Port;
             // 验证登录
+            smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new System.Net.NetworkCredential(options.UserName, options.Password);//"@"输入有效的邮件名, "*"输入有效的密码
 
             try
@@ -65,7 +71,7 @@ namespace WebMonitorPlugin.Utils
             }
             catch (Exception ex)
             {
-                errorMsg = ex.Message;
+                errorMsg = ex.ToString();
 
                 return false;
             }

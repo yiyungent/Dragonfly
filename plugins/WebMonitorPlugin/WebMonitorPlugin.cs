@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace WebMonitorPlugin
 {
-    public class WebMonitorPlugin : BasePlugin, ITimeJobPlugin
+    public class WebMonitorPlugin : BasePlugin/*, ITimeJobPlugin*/
     {
         public WebMonitorPlugin()
         {
@@ -18,6 +18,7 @@ namespace WebMonitorPlugin
         public override (bool IsSuccess, string Message) AfterEnable()
         {
             Console.WriteLine($"{nameof(WebMonitorPlugin)}: {nameof(AfterEnable)}");
+
             return base.AfterEnable();
         }
 
@@ -93,31 +94,31 @@ namespace WebMonitorPlugin
                     if (result)
                     {
                         // 条件成立, 执行通知
-                        Utils.MailUtil.SendMail(new Utils.MailOptions
-                        {
-                            Host = settings.Mail.SMTPHost,
-                            Content = task.Message,
-                            EnableSsl = settings.Mail.EnableSsl,
-                            Password = settings.Mail.Password,
-                            Port = settings.Mail.Port,
-                            ReceiveAddress = task.ReceiveMail,
-                            SenderDisplayAddress = settings.Mail.SenderDisplayAddress,
-                            SenderDisplayName = settings.Mail.SenderDisplayName,
-                            Subject = task.Message,
-                            UserName = settings.Mail.UerName
-                        }, out string errorMsg);
+                        //Utils.MailUtil.SendMail(new Utils.MailOptions
+                        //{
+                        //    Host = settings.Mail.SMTPHost,
+                        //    Content = task.Message,
+                        //    EnableSsl = settings.Mail.EnableSsl,
+                        //    Password = settings.Mail.Password,
+                        //    Port = settings.Mail.Port,
+                        //    ReceiveAddress = task.ReceiveMail,
+                        //    SenderDisplayAddress = settings.Mail.SenderDisplayAddress,
+                        //    SenderDisplayName = settings.Mail.SenderDisplayName,
+                        //    Subject = task.Message,
+                        //    UserName = settings.Mail.UerName
+                        //}, out string errorMsg);
 
-                        if (!string.IsNullOrEmpty(errorMsg))
-                        {
-                            Console.WriteLine("发送邮件失败: ");
-                            Console.WriteLine(errorMsg);
-                        }
-                        else
-                        {
-                            Console.WriteLine("发送邮件成功: ");
-                            Console.WriteLine(task.ReceiveMail);
-                            Console.WriteLine(task.Message);
-                        }
+                        //if (!string.IsNullOrEmpty(errorMsg))
+                        //{
+                        //    Console.WriteLine("发送邮件失败: ");
+                        //    Console.WriteLine(errorMsg);
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine("发送邮件成功: ");
+                        //    Console.WriteLine(task.ReceiveMail);
+                        //    Console.WriteLine(task.Message);
+                        //}
                     }
                 }
                 #endregion
