@@ -20,6 +20,7 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 
 ## Quick Start
 
+> 部署完成后访问: <https://yourdomain/PluginCore/Admin>
 
 ### 方式1: 使用 Railway 免费部署 
 
