@@ -20,9 +20,9 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 
 ## Quick Start
 
-> 部署完成后访问: <https://yourdomain/PluginCore/Admin>
+> 部署完成后访问: <https://yourdomain/PluginCore/Admin>   
 
-### 方式1: 使用 Railway 免费部署 
+### 方式1: 使用 Railway 免费 一键部署 
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?code=JQuUBW&referralCode=8eKBDA)
 
@@ -37,7 +37,7 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 
 > 注意: Railway 重新 Deploy 后会删除数据, 你安装的所有插件及数据都将清空。
 
-### 方式2: 使用 Heroku 免费部署
+### 方式2: 使用 Heroku 免费 一键部署
 
 [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yiyungent/Dragonfly)
 
@@ -66,6 +66,12 @@ docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --shm-size="500m" --na
 
 
 ## 插件开发
+
+> 注意:  
+> 仓库根目录: `plugins/WebMonitorPlugin` 此插件暂不可用, 未开发完,   
+> 所有纯基于 `PluginCore.IPlugins` 开发的插件都通用,   
+> 
+> - [GitHubApiPlugin-netstandard2.0.zip](https://github.com/yiyungent/PluginCore/releases/download/GitHubApiPlugin-v0.1.0/GitHubApiPlugin-netstandard2.0.zip)
 
 > 插件开发 可参考:   
 > - [插件开发 | PluginCore](https://moeci.com/PluginCore/zh/PluginDev/Guide/)
