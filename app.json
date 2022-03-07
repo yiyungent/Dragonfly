@@ -1,0 +1,22 @@
+{
+  "name": "Dragonfly",
+  "description": "Web 自动化平台 - Heroku Deploy",
+  "keywords": ["yiyungent", "Dragonfly"],
+  "website": "https://github.com/yiyungent/Dragonfly",
+  "repository": "https://github.com/yiyungent/Dragonfly",
+  "success_url": "/",
+  "env": {
+    "PLUGINCORE_ADMIN_USERNAME": {
+      "description": "PluginCore Admin 用户名",
+      "value": "admin",
+      "required": true
+    },
+    "PLUGINCORE_ADMIN_PASSWORD": {
+      "description": "PluginCore Admin 密码",
+      "value": "Dragonfly",
+      "required": true
+    }
+  },
+
+  "stack": "container"
+}
