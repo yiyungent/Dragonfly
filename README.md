@@ -48,7 +48,7 @@ cd Dragonfly
 
 docker build -t yiyungent/dragonfly -f src/WebApi/Dockerfile .
 
-docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --name dragonfly yiyungent/dragonfly
+docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --shm-size="500m" --name dragonfly yiyungent/dragonfly
 ```
 
 
