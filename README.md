@@ -4,7 +4,7 @@
 > ASP.NET Core + Selenium 实现 Web 自动化平台
 
 [![repo size](https://img.shields.io/github/repo-size/yiyungent/Dragonfly.svg?style=flat)]()
-[![LICENSE](https://img.shields.io/github/license/yiyungent/Dragonfly.svg?style=flat)](https://github.com/yiyungent/Dragonfly/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/github/license/yiyungent/Dragonfly.svg?style=flat)](https://github.com/yiyungent/Dragonfly/blob/main/LICENSE)
 [![QQ Group](https://img.shields.io/badge/QQ%20Group-894031109-deepgreen)](https://jq.qq.com/?_wv=1027&k=q5R82fYN)
 
 ## Introduce
