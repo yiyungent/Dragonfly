@@ -19,19 +19,19 @@ jobs:
       with:
         dotnet-version: 5.0.102
         
-    - name: Build
+    - name: Publish
       run: |
         cd ./plugins/WebMonitorPlugin
-        dotnet build --configuration Release
+        dotnet publish --configuration Release
         ls
         ls ./bin/Release/
       
     - name: Zip the Build
       run: |
-        cd ./plugins/WebMonitorPlugin/bin/Release/netstandard2.0
+        cd ./plugins/WebMonitorPlugin/bin/Release/netstandard2.0/publish
         zip -r WebMonitorPlugin-netstandard2.0.zip *
-        cd ../../../../../
-        mv ./plugins/WebMonitorPlugin/bin/Release/netstandard2.0/*.zip ./
+        cd ../../../../../../
+        mv ./plugins/WebMonitorPlugin/bin/Release/netstandard2.0/publish/*.zip ./
       
     - name: Create Release and Upload Release Asset
       uses: softprops/action-gh-release@v1
