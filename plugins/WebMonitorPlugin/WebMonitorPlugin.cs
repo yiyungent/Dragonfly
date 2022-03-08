@@ -87,7 +87,7 @@ namespace WebMonitorPlugin
                 Console.WriteLine($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} 执行任务 {task.Name}");
 
                 #region 测试
-                //Thread.Sleep(5000);
+                //Thread.Sleep(30 * 1000);
                 //return;
                 #endregion
 
