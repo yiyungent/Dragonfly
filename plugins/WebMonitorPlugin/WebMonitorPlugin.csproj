@@ -6,6 +6,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Dragonfly.Sdk" Version="0.1.0" />
+		<PackageReference Include="Telegram.Bot" Version="17.0.0" />
 	</ItemGroup>
 
 	<!-- 发布插件相关文件 -->
