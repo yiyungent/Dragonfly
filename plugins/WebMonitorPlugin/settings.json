@@ -7,7 +7,7 @@
 	},
 	"Tasks": [
 		{
-			"Name": "hanser ³é½±ÌáÐÑ",
+			"Name": "hanser æŠ•ç¨¿æé†’",
 			"Message": "",
 			"Url": "https://space.bilibili.com/11073/video",
 			"JavaScriptCondition": "return (Number.parseInt(document.querySelector('.n-tab-links .n-video .n-num').innerText) > 393)",
