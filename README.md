@@ -20,7 +20,10 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 
 ## Quick Start
 
-> 部署完成后访问: <https://yourdomain/PluginCore/Admin>   
+> 部署完成后访问: <https://yourdomain/PluginCore/Admin>    
+> 插件体验:   
+> 下载插件包, 然后直接 `上传 -> 安装 -> 设置 -> 启用` 即可
+> - [WebMonitorPlugin-netstandard2.0.zip](https://github.com/yiyungent/Dragonfly/releases/download/WebMonitorPlugin-v0.1.0/WebMonitorPlugin-netstandard2.0.zip)
 
 ### 方式1: 使用 Railway 免费 一键部署 
 
@@ -68,9 +71,10 @@ docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --shm-size="500m" --na
 ## 插件开发
 
 > 注意:  
-> 仓库根目录: `plugins/WebMonitorPlugin` 此插件暂不可用, 未开发完,   
 > 所有纯基于 `PluginCore.IPlugins` 开发的插件都通用,   
+> 下载插件包, 然后 `上传 -> 安装 -> 设置 -> 启用` 即可
 > 
+> - [WebMonitorPlugin-netstandard2.0.zip](https://github.com/yiyungent/Dragonfly/releases/download/WebMonitorPlugin-v0.1.0/WebMonitorPlugin-netstandard2.0.zip)
 > - [GitHubApiPlugin-netstandard2.0.zip](https://github.com/yiyungent/PluginCore/releases/download/GitHubApiPlugin-v0.1.0/GitHubApiPlugin-netstandard2.0.zip)
 
 > 插件开发 可参考:   

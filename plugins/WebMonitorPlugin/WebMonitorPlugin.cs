@@ -138,7 +138,7 @@ namespace WebMonitorPlugin
                     if (!string.IsNullOrEmpty(task.JavaScriptCondition))
                     {
                         //string resultStr = driver.ExecuteScript($"return {task.JavaScriptCondition}").ToString();
-                        string resultStr = driver.ExecuteScript($"return {task.JavaScriptCondition}").ToString();
+                        string resultStr = driver.ExecuteScript($"{task.JavaScriptCondition}").ToString();
                         bool result = Convert.ToBoolean(resultStr);
                         Console.WriteLine($"JavaScriptCondition: resultStr: {resultStr}");
                         if (result)
@@ -148,9 +148,18 @@ namespace WebMonitorPlugin
                                 #region 截图
                                 // 保存截图
                                 // https://www.selenium.dev/documentation/webdriver/browser/windows/#takescreenshot
-                                Screenshot screenshot = (driver as ITakesScreenshot).GetScreenshot();
-                                // 直接用 图片数据
-                                byte[] screenshotBytes = screenshot.AsByteArray;
+                                byte[] screenshotBytes = null;
+                                try
+                                {
+                                    Screenshot screenshot = null;
+                                    screenshot = (driver as ITakesScreenshot).GetScreenshot();
+                                    // 直接用 图片数据
+                                    screenshotBytes = screenshot.AsByteArray;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.ToString());
+                                }
                                 #endregion
 
                                 // 条件成立, 执行通知
@@ -190,61 +199,73 @@ namespace WebMonitorPlugin
         public void TaskNotify(SettingsModel settings, SettingsModel.TaskModel task, byte[] screenshotBytes)
         {
             #region 邮件
-            if (settings.Mail.Enable)
+            if (settings.Mail != null)
             {
-                //Utils.MailUtil.SendMail(new Utils.MailOptions
-                //{
-                //    Host = settings.Mail.SMTPHost,
-                //    Content = task.Message,
-                //    EnableSsl = settings.Mail.EnableSsl,
-                //    Password = settings.Mail.Password,
-                //    Port = settings.Mail.Port,
-                //    ReceiveAddress = settings.Mail.ReceiveMail,
-                //    SenderDisplayAddress = settings.Mail.SenderDisplayAddress,
-                //    SenderDisplayName = settings.Mail.SenderDisplayName,
-                //    Subject = task.Message,
-                //    UserName = settings.Mail.UerName
-                //}, out string errorMsg);
+                if (settings.Mail.Enable)
+                {
+                    //Utils.MailUtil.SendMail(new Utils.MailOptions
+                    //{
+                    //    Host = settings.Mail.SMTPHost,
+                    //    Content = task.Message,
+                    //    EnableSsl = settings.Mail.EnableSsl,
+                    //    Password = settings.Mail.Password,
+                    //    Port = settings.Mail.Port,
+                    //    ReceiveAddress = settings.Mail.ReceiveMail,
+                    //    SenderDisplayAddress = settings.Mail.SenderDisplayAddress,
+                    //    SenderDisplayName = settings.Mail.SenderDisplayName,
+                    //    Subject = task.Message,
+                    //    UserName = settings.Mail.UerName
+                    //}, out string errorMsg);
 
-                //if (!string.IsNullOrEmpty(errorMsg))
-                //{
-                //    Console.WriteLine("发送邮件失败: ");
-                //    Console.WriteLine(errorMsg);
-                //}
-                //else
-                //{
-                //    Console.WriteLine("发送邮件成功: ");
-                //    Console.WriteLine(settings.Mail.ReceiveMail);
-                //    Console.WriteLine(task.Message);
-                //}
+                    //if (!string.IsNullOrEmpty(errorMsg))
+                    //{
+                    //    Console.WriteLine("发送邮件失败: ");
+                    //    Console.WriteLine(errorMsg);
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("发送邮件成功: ");
+                    //    Console.WriteLine(settings.Mail.ReceiveMail);
+                    //    Console.WriteLine(task.Message);
+                    //}
+                }
             }
             #endregion
 
             #region Telegram
-            if (settings.Telegram.Enable)
+            if (settings.Telegram != null)
             {
-                string chatId = settings.Telegram.ChatId;
-                var botClient = new TelegramBotClient(settings.Telegram.Token);
-
-                Message message = botClient.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: $@"任务: *{task.Name}*
-                         ---
-                         {task.Url}
-                         ---
-                         {task.Message}",
-                    parseMode: ParseMode.MarkdownV2,
-                    //disableNotification: true,
-                    replyMarkup: new InlineKeyboardMarkup(
-                        InlineKeyboardButton.WithUrl(
-                            "Click Url",
-                            $"{task.Url}")))
-                    .Result;
-
-                using (MemoryStream stream = new MemoryStream(screenshotBytes))
+                if (settings.Telegram.Enable)
                 {
-                    InputOnlineFile inputOnlineFile = new InputOnlineFile(stream, $"screenshot-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.png");
-                    botClient.SendDocumentAsync(chatId: chatId, inputOnlineFile).Wait();
+                    string chatId = settings.Telegram.ChatId;
+                    var botClient = new TelegramBotClient(settings.Telegram.Token);
+                    Console.WriteLine($"Telegram.ChatId: {chatId}");
+                    Console.WriteLine($"Telegram.Token: {settings.Telegram.Token}");
+                    // TODO: Telegram.Bot.Exceptions.ApiRequestException: Bad Request: can't parse entities: Character '-' is reserved and must be escaped with the preceding '\'
+                    // text: 不能使用 ---
+                    // https://core.telegram.org/bots/api#formatting-options
+                    Message message = botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: $@"<strong>任务: {task.Name?.Trim() ?? "匿名"}</strong>
+                         <a href='{task.Url}'>{task.Url}</a>
+
+                         {task.Message}",
+                        parseMode: ParseMode.Html,
+                        //parseMode: ParseMode.MarkdownV2,
+                        //disableNotification: true,
+                        replyMarkup: new InlineKeyboardMarkup(
+                            InlineKeyboardButton.WithUrl(
+                                "Click Url",
+                                $"{task.Url}")))
+                        .Result;
+                    if (screenshotBytes != null && screenshotBytes.Length > 0)
+                    {
+                        using (MemoryStream stream = new MemoryStream(screenshotBytes))
+                        {
+                            InputOnlineFile inputOnlineFile = new InputOnlineFile(stream, $"screenshot-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.png");
+                            botClient.SendDocumentAsync(chatId: chatId, inputOnlineFile).Wait();
+                        }
+                    }
                 }
             }
             #endregion
