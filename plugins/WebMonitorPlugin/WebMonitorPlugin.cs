@@ -133,49 +133,56 @@ namespace WebMonitorPlugin
                     driver.Manage().Window.Size = new System.Drawing.Size(width, height);
                     #endregion
 
+                    #region js条件url
+                    // TODO: js条件url
+                    #endregion
+
                     #region js条件
                     // 注入 JavaScriptCondition
                     if (!string.IsNullOrEmpty(task.JavaScriptCondition))
                     {
                         //string resultStr = driver.ExecuteScript($"return {task.JavaScriptCondition}").ToString();
-                        string resultStr = driver.ExecuteScript($"{task.JavaScriptCondition}").ToString();
-                        bool result = Convert.ToBoolean(resultStr);
+                        string resultStr = driver.ExecuteScript($"{task.JavaScriptCondition}")?.ToString() ?? null;
                         Console.WriteLine($"JavaScriptCondition: resultStr: {resultStr}");
-                        if (result)
+                        if (!string.IsNullOrEmpty(resultStr))
                         {
-                            try
+                            bool result = Convert.ToBoolean(resultStr);
+                            if (result)
                             {
-                                #region 截图
-                                // 保存截图
-                                // https://www.selenium.dev/documentation/webdriver/browser/windows/#takescreenshot
-                                byte[] screenshotBytes = null;
                                 try
                                 {
-                                    Screenshot screenshot = null;
-                                    screenshot = (driver as ITakesScreenshot).GetScreenshot();
-                                    // 直接用 图片数据
-                                    screenshotBytes = screenshot.AsByteArray;
+                                    #region 截图
+                                    // 保存截图
+                                    // https://www.selenium.dev/documentation/webdriver/browser/windows/#takescreenshot
+                                    byte[] screenshotBytes = null;
+                                    try
+                                    {
+                                        Screenshot screenshot = null;
+                                        screenshot = (driver as ITakesScreenshot).GetScreenshot();
+                                        // 直接用 图片数据
+                                        screenshotBytes = screenshot.AsByteArray;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.ToString());
+                                    }
+                                    #endregion
+
+                                    // 条件成立, 执行通知
+                                    TaskNotify(settings, task, screenshotBytes);
+
+                                    // 任务完成，设置为禁用
+                                    task.Enable = false;
+                                    settings.Tasks[taskIndex] = task;
+                                    PluginSettingsModelFactory.Save(settings, nameof(WebMonitorPlugin));
                                 }
                                 catch (Exception ex)
                                 {
                                     Console.WriteLine(ex.ToString());
                                 }
-                                #endregion
 
-                                // 条件成立, 执行通知
-                                TaskNotify(settings, task, screenshotBytes);
 
-                                // 任务完成，设置为禁用
-                                task.Enable = false;
-                                settings.Tasks[taskIndex] = task;
-                                PluginSettingsModelFactory.Save(settings, nameof(WebMonitorPlugin));
                             }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.ToString());
-                            }
-
-
                         }
                     }
                     #endregion
