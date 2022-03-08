@@ -1,6 +1,6 @@
 # Heroku Dockerfile
 
-FROM yiyungent/dragonfly:latest
+FROM yiyungent/dragonfly:v0.1.1
 
 ADD heroku-entrypoint.sh ./heroku-entrypoint.sh
 RUN chmod +x ./heroku-entrypoint.sh

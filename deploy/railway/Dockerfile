@@ -1,6 +1,7 @@
 # Railway Dockerfile
 
-FROM yiyungent/dragonfly:latest
+# 注意: yiyungent/dragonfly:latest railway 会一直使用缓存，不会更新镜像
+FROM yiyungent/dragonfly:v0.1.1
 
 ADD railway-entrypoint.sh ./railway-entrypoint.sh
 RUN chmod +x ./railway-entrypoint.sh
