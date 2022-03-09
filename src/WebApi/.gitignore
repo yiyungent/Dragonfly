@@ -1,0 +1,5 @@
+App_Data/plugin.config.json
+App_Data/PluginCore.Config.json
+App_Data/TempPluginUpload/
+Plugins_wwwroot/
+Plugins/
