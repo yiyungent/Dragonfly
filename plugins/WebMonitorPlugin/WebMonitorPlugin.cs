@@ -90,8 +90,10 @@ namespace WebMonitorPlugin
                 Console.WriteLine($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} 执行任务 {task.Name}");
 
                 #region 测试
+#if DEBUG
                 Thread.Sleep(30 * 1000);
                 return;
+#endif
                 #endregion
 
                 #region 初始化参数选项
