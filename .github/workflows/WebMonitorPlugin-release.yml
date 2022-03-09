@@ -29,6 +29,9 @@ jobs:
     - name: Zip the Build
       run: |
         cd ./plugins/WebMonitorPlugin/bin/Release/netstandard2.0/publish
+        # 移除不需要的 dll
+        rm Microsoft.*.dll
+        rm System.*.dll
         zip -r WebMonitorPlugin-netstandard2.0.zip *
         cd ../../../../../../
         mv ./plugins/WebMonitorPlugin/bin/Release/netstandard2.0/publish/*.zip ./

@@ -20,7 +20,7 @@
 
 	<!-- 方便开发debug,与发布到nuget -->
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="PluginCore" Version="0.9.1" />
+		<PackageReference Include="PluginCore" Version="0.9.2" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<ProjectReference Include="..\PluginCore\src\PluginCore\PluginCore.csproj" />

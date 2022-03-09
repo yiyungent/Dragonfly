@@ -4,16 +4,5 @@
 		"Token": "",
 		"ChatId": "",
 		"Enable": false
-	},
-	"Tasks": [
-		{
-			"Name": "hanser 投稿提醒",
-			"Message": "hanser 投稿啦!提醒完成后, 会自动设置 Enable 为 false",
-			"Url": "https://space.bilibili.com/11073/video",
-			"JavaScriptCondition": "return (Number.parseInt(document.querySelector('.n-tab-links .n-video .n-num').innerText) > 393)",
-			"ForceWait": 20,
-			"WindowWidth": 1280,
-			"Enable": false
-		}
-	]
+	}
 }

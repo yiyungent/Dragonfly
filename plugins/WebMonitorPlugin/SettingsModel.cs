@@ -11,8 +11,6 @@ namespace WebMonitorPlugin
 
         public TelegramModel Telegram { get; set; }
 
-        public List<TaskModel> Tasks { get; set; }
-
         public class TelegramModel
         {
             public string Token { get; set; }
@@ -36,19 +34,6 @@ namespace WebMonitorPlugin
 
             public bool Enable { get; set; }
 
-        }
-
-        public class TaskModel
-        {
-            public string Name { get; set; }
-            public string Message { get; set; }
-            public string Url { get; set; }
-            public string JavaScriptCondition { get; set; }
-            public int ForceWait { get; set; }
-            public int WindowWidth { get; set; }
-            public int WindowHeight { get; set; }
-
-            public bool Enable { get; set; }
         }
 
 

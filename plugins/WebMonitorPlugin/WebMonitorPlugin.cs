@@ -13,6 +13,9 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.IO;
 using Telegram.Bot.Types.InputFiles;
 using OpenQA.Selenium;
+using WebMonitorPlugin.Infrastructure;
+using WebMonitorPlugin.Models;
+using System.Collections.Generic;
 
 namespace WebMonitorPlugin
 {
@@ -66,10 +69,10 @@ namespace WebMonitorPlugin
 
             var settings = PluginSettingsModelFactory.Create<SettingsModel>(nameof(WebMonitorPlugin));
 
-            var enabledTasks = settings.Tasks.Where(m => m.Enable).ToList();
+            var enabledTasks = TaskManager.Tasks().Where(m => m.Enable).ToList();
             for (int i = 0; i < enabledTasks.Count; i++)
             {
-                ExecuteTask(settings, taskIndex: i, enabledTasks[i]);
+                ExecuteTask(settings, enabledTasks[i]);
             }
             IsRunning = false;
 
@@ -79,7 +82,7 @@ namespace WebMonitorPlugin
         }
 
 
-        public void ExecuteTask(SettingsModel settings, int taskIndex, SettingsModel.TaskModel task)
+        public void ExecuteTask(SettingsModel settings, TaskModel task)
         {
             #region 防止多线程同时执行, A线程使用时, 其它线程阻塞直到A线程完成, 保证 ChromeDriver 单个执行
             lock (_taskLock)
@@ -87,8 +90,8 @@ namespace WebMonitorPlugin
                 Console.WriteLine($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} 执行任务 {task.Name}");
 
                 #region 测试
-                //Thread.Sleep(30 * 1000);
-                //return;
+                Thread.Sleep(30 * 1000);
+                return;
                 #endregion
 
                 #region 初始化参数选项
@@ -133,17 +136,19 @@ namespace WebMonitorPlugin
                     driver.Manage().Window.Size = new System.Drawing.Size(width, height);
                     #endregion
 
-                    #region js条件url
-                    // TODO: js条件url
-                    #endregion
-
                     #region js条件
                     // 注入 JavaScriptCondition
-                    if (!string.IsNullOrEmpty(task.JavaScriptCondition))
+                    task.JsCondition = TaskManager.Task(task.Name).JsCondition;
+                    if (!string.IsNullOrEmpty(task.JsCondition))
                     {
-                        //string resultStr = driver.ExecuteScript($"return {task.JavaScriptCondition}").ToString();
-                        string resultStr = driver.ExecuteScript($"{task.JavaScriptCondition}")?.ToString() ?? null;
-                        Console.WriteLine($"JavaScriptCondition: resultStr: {resultStr}");
+                        driver.ExecuteScript("window.WebMonitorPlugin = {};");
+                        driver.ExecuteScript("window.WebMonitorPlugin.JavaScriptConditionResult = false;");
+
+                        // 在 内部 改变 window.WebMonitorPlugin.JavaScriptConditionResult 的值
+                        driver.ExecuteScript(task.JsCondition);
+
+                        string resultStr = driver.ExecuteScript($"return window.WebMonitorPlugin.JavaScriptConditionResult")?.ToString() ?? null;
+                        Console.WriteLine($"JavaScriptConditionResult: {resultStr}");
                         if (!string.IsNullOrEmpty(resultStr))
                         {
                             bool result = Convert.ToBoolean(resultStr);
@@ -173,8 +178,7 @@ namespace WebMonitorPlugin
 
                                     // 任务完成，设置为禁用
                                     task.Enable = false;
-                                    settings.Tasks[taskIndex] = task;
-                                    PluginSettingsModelFactory.Save(settings, nameof(WebMonitorPlugin));
+                                    TaskManager.AddTask(task);
                                 }
                                 catch (Exception ex)
                                 {
@@ -203,7 +207,7 @@ namespace WebMonitorPlugin
         }
 
 
-        public void TaskNotify(SettingsModel settings, SettingsModel.TaskModel task, byte[] screenshotBytes)
+        public void TaskNotify(SettingsModel settings, TaskModel task, byte[] screenshotBytes)
         {
             #region 邮件
             if (settings.Mail != null)
