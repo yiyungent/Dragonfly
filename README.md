@@ -12,18 +12,43 @@
 
 ASP.NET Core + Selenium 实现 Web 自动化平台
 
+> **应用场景:**
+> - 自动签到等
+> - 监控网页变化, 及时提醒
+> - 运行 WebUI 自动化测试
+> - 爬虫, 数据采集
+> - 一切可用浏览器完成的操作，都可自动化运行
+
 - **开箱即用** - 完全打包好的 `Selenium` 环境
 - **易扩展** - 集成 `PluginCore`, 插件化架构
 
 
+## Screenshots
+
+### 插件管理: PluginCore Admin
+
+![](screenshots/2022-03-09-20-46-05.png)
+
+
+### 插件: WebMonitorPlugin
+
+> 可用于 网页监控，以达到 开播，商品降价，新活动，稿件更新，新歌曲 提醒
+
+![](screenshots/2022-03-09-20-46-26.png)
+![](screenshots/2022-03-09-20-47-33.png)
+
+> Telegram 通知, 还会附加一张网页截图
+
+![](screenshots/2022-03-09-20-48-16.png)
 
 
 ## Quick Start
 
 > 部署完成后访问: <https://yourdomain/PluginCore/Admin>    
-> 插件体验:   
-> 下载插件包, 然后直接 `上传 -> 安装 -> 设置 -> 启用` 即可
-> - [WebMonitorPlugin-netstandard2.0.zip](https://github.com/yiyungent/Dragonfly/releases/download/WebMonitorPlugin-v0.1.0/WebMonitorPlugin-netstandard2.0.zip)
+
+> 插件:   
+> 下载插件包, 然后直接 `上传 -> 安装 -> 文档 -> 设置 -> 启用 -> 文档` 即可
+
 
 ### 方式1: 使用 Railway 免费 一键部署 
 
@@ -73,9 +98,7 @@ docker run -d -p 5004:80 -e ASPNETCORE_URLS="http://*:80" --shm-size="500m" --na
 > 注意:  
 > 所有纯基于 `PluginCore.IPlugins` 开发的插件都通用,   
 > 下载插件包, 然后 `上传 -> 安装 -> 设置 -> 启用` 即可
-> 
-> - [WebMonitorPlugin-netstandard2.0.zip](https://github.com/yiyungent/Dragonfly/releases/download/WebMonitorPlugin-v0.1.0/WebMonitorPlugin-netstandard2.0.zip)
-> - [GitHubApiPlugin-netstandard2.0.zip](https://github.com/yiyungent/PluginCore/releases/download/GitHubApiPlugin-v0.1.0/GitHubApiPlugin-netstandard2.0.zip)
+
 
 > 插件开发 可参考:   
 > - [插件开发 | PluginCore](https://moeci.com/PluginCore/zh/PluginDev/Guide/)
