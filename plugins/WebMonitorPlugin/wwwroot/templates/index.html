@@ -4,7 +4,7 @@
 	}
 </style>
 <!-- start 删除确认框 -->
-<div class="modal fade" id="oneDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -14,34 +14,13 @@
 			<div class="modal-body">
 				<form>
 					<div class="form-group">
-						<label for="message-text" class="control-label">确定要删除吗？</label>
+						<label for="message-text" class="control-label">确定要删除 ?</label>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				<button onclick="oneDeleteSubmit()" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="batchDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-				<h4 class="modal-title">确认框</h4>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="message-text" class="control-label">确定要批量删除吗？</label>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				<button onclick="batchDelete(true)" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+				<button onclick="deleteSubmit()" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
 			</div>
 		</div>
 	</div>
