@@ -19,6 +19,7 @@
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery -->
     <script src="/plugins/WebMonitorPlugin/libs/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- 注意: 不知道为什么一定要写在这里才能成功, 明明在子页面也是在后面的 -->
     <script src="/plugins/WebMonitorPlugin/libs/jquery.serializeJSON/jquery.serializejson.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="/plugins/WebMonitorPlugin/libs/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -97,7 +98,7 @@
             </section>
             <!-- Main content -->
             <section class="content container-fluid">
-                {{content}}
+                {{Content}}
             </section>
             <!-- /.content -->
         </div>

@@ -25,7 +25,7 @@ namespace WebMonitorPlugin.Controllers
             string pluginTemplates = System.IO.Path.Combine(pluginWwwroot, "templates");
             string layoutStr = System.IO.File.ReadAllText(System.IO.Path.Combine(pluginTemplates, "layoutMain.html"), System.Text.Encoding.UTF8);
             string targetStr = System.IO.File.ReadAllText(System.IO.Path.Combine(pluginTemplates, "index.html"), System.Text.Encoding.UTF8);
-            string rtnStr = layoutStr.Replace("{{content}}", targetStr);
+            string rtnStr = layoutStr.Replace("{{Content}}", targetStr);
 
 
             StringBuilder sb = new StringBuilder();
@@ -69,7 +69,7 @@ namespace WebMonitorPlugin.Controllers
             string pluginTemplates = System.IO.Path.Combine(pluginWwwroot, "templates");
             string layoutStr = System.IO.File.ReadAllText(System.IO.Path.Combine(pluginTemplates, "layoutMain.html"), System.Text.Encoding.UTF8);
             string targetStr = System.IO.File.ReadAllText(System.IO.Path.Combine(pluginTemplates, "create.html"), System.Text.Encoding.UTF8);
-            string rtnStr = layoutStr.Replace("{{content}}", targetStr);
+            string rtnStr = layoutStr.Replace("{{Content}}", targetStr);
 
             return await Task.FromResult(Content(rtnStr, "text/html; charset=utf-8"));
         }
@@ -84,12 +84,13 @@ namespace WebMonitorPlugin.Controllers
                 TaskManager.AddTask(new Models.TaskModel
                 {
                     Name = requestModel.Name,
+                    Url = requestModel.Url,
                     Message = requestModel.Message,
                     ForceWait = requestModel.ForceWait,
-                    JsCondition = requestModel.JsCondition,
-                    Url = requestModel.Url,
                     WindowWidth = requestModel.WindowWidth,
                     WindowHeight = requestModel.WindowHeight,
+                    JsCondition = requestModel.JsCondition,
+                    ForceWaitAfterJsConditionExecute = requestModel.ForceWaitAfterJsConditionExecute,
                     Enable = requestModel.Enable
                 });
 
@@ -114,16 +115,16 @@ namespace WebMonitorPlugin.Controllers
             string pluginTemplates = System.IO.Path.Combine(pluginWwwroot, "templates");
             string layoutStr = System.IO.File.ReadAllText(System.IO.Path.Combine(pluginTemplates, "layoutMain.html"), System.Text.Encoding.UTF8);
             string targetStr = System.IO.File.ReadAllText(System.IO.Path.Combine(pluginTemplates, "edit.html"), System.Text.Encoding.UTF8);
-            string rtnStr = layoutStr.Replace("{{content}}", targetStr);
+            string rtnStr = layoutStr.Replace("{{Content}}", targetStr);
             TaskModel task = TaskManager.Task(id);
-            rtnStr = rtnStr.Replace("{{name}}", task.Name)
-                            .Replace("{{url}}", task.Url)
-                            .Replace("{{message}}", task.Message)
-                            .Replace("{{forceWait}}", task.ForceWait.ToString())
-                            .Replace("{{windowWidth}}", task.WindowWidth.ToString())
-                            .Replace("{{windowHeight}}", task.WindowHeight.ToString())
-                            .Replace("{{enable}}", task.Enable ? "true" : "false");
-
+            rtnStr = rtnStr.Replace("{{Name}}", task.Name)
+                            .Replace("{{Url}}", task.Url)
+                            .Replace("{{Message}}", task.Message)
+                            .Replace("{{ForceWait}}", task.ForceWait.ToString())
+                            .Replace("{{WindowWidth}}", task.WindowWidth.ToString())
+                            .Replace("{{WindowHeight}}", task.WindowHeight.ToString())
+                            .Replace("{{ForceWaitAfterJsConditionExecute}}", task.ForceWaitAfterJsConditionExecute.ToString())
+                            .Replace("{{Enable}}", task.Enable ? "true" : "false");
 
             return await Task.FromResult(Content(rtnStr, "text/html; charset=utf-8"));
         }
@@ -135,7 +136,7 @@ namespace WebMonitorPlugin.Controllers
             TaskModel task = TaskManager.Task(id);
             string jsCondition = task.JsCondition;
 
-            return await Task.FromResult(Content(jsCondition, "application/json"));
+            return await Task.FromResult(Content(jsCondition, "text/javascript"));
         }
 
 
@@ -150,12 +151,13 @@ namespace WebMonitorPlugin.Controllers
                 TaskManager.AddTask(new Models.TaskModel
                 {
                     Name = requestModel.Name,
+                    Url = requestModel.Url,
                     Message = requestModel.Message,
                     ForceWait = requestModel.ForceWait,
-                    JsCondition = requestModel.JsCondition,
-                    Url = requestModel.Url,
                     WindowWidth = requestModel.WindowWidth,
                     WindowHeight = requestModel.WindowHeight,
+                    JsCondition = requestModel.JsCondition,
+                    ForceWaitAfterJsConditionExecute = requestModel.ForceWaitAfterJsConditionExecute,
                     Enable = requestModel.Enable
                 });
 

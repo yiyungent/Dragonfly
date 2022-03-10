@@ -156,8 +156,19 @@ namespace WebMonitorPlugin
                             bool result = Convert.ToBoolean(resultStr);
                             if (result)
                             {
+                                // 条件成立
+                                Console.WriteLine($"JavaScript 条件 成立, 执行预订任务");
+
+                                #region 预订任务
                                 try
                                 {
+                                    #region 执行 JavaScript 条件后, 强制等待
+                                    if (task.ForceWaitAfterJsConditionExecute > 0)
+                                    {
+                                        Thread.Sleep(TimeSpan.FromSeconds(task.ForceWaitAfterJsConditionExecute));
+                                    }
+                                    #endregion
+
                                     #region 截图
                                     // 保存截图
                                     // https://www.selenium.dev/documentation/webdriver/browser/windows/#takescreenshot
@@ -184,11 +195,19 @@ namespace WebMonitorPlugin
                                 }
                                 catch (Exception ex)
                                 {
+                                    Console.WriteLine("预订任务执行出错:");
                                     Console.WriteLine(ex.ToString());
                                 }
-
-
+                                #endregion
                             }
+                            else
+                            {
+                                Console.WriteLine($"JavaScript 条件 不成立, 放弃预订任务");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"JavaScript 条件 不成立, 放弃预订任务");
                         }
                     }
                     #endregion
