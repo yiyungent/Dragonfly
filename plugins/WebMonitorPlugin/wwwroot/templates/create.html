@@ -107,8 +107,8 @@
                 language: 'javascript',
                 theme: 'vs-dark'
 			});
-            window.editor.setValue(`// window.WebMonitorPlugin.JavaScriptConditionResult = false; \n`
-									+`// 通过给它赋值来确定本次任务 是否达成条件, 默认 false \n`
+            window.editor.setValue(`// localStorage.setItem("WebMonitorPlugin.JavaScriptConditionResult", false); \n`
+									+`// 通过此方法来确定本次任务 是否达成条件, 默认 false \n`
 									+`// 下面写你的业务逻辑`);
         });
     }

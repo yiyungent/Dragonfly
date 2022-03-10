@@ -1,5 +1,8 @@
+# PluginCore 相关
 App_Data/plugin.config.json
 App_Data/PluginCore.Config.json
 App_Data/TempPluginUpload/
 Plugins_wwwroot/
 Plugins/
+# 本地开发 Selenium
+chromedriver.exe

@@ -91,8 +91,8 @@ namespace WebMonitorPlugin
 
                 #region 测试
 #if DEBUG
-                Thread.Sleep(30 * 1000);
-                return;
+                //Thread.Sleep(30 * 1000);
+                //return;
 #endif
                 #endregion
 
@@ -101,7 +101,12 @@ namespace WebMonitorPlugin
                 // https://stackoverflow.com/questions/59186984/selenium-common-exceptions-sessionnotcreatedexception-message-session-not-crea
                 options.AddArgument("--no-sandbox");
                 options.AddArgument("--disable-dev-shm-usage");
+#if DEBUG
+                // 本地开发
+#else
                 options.AddArgument("--headless");
+#endif
+
                 options.AddArgument("--ignore-certificate-errors");
                 options.AddArgument("--disable-gpu");
 
@@ -110,6 +115,16 @@ namespace WebMonitorPlugin
 
                 try
                 {
+                    #region 设置 Cookie
+                    // 在 访问 Url 之前 设置 Cookie
+                    // Adds the cookie into current browser context
+                    //foreach (var cookie in task.Cookies)
+                    //{
+
+                    //}
+                    //driver.Manage().Cookies.AddCookie(new Cookie("key", "value"));
+                    #endregion
+
                     driver.Navigate().GoToUrl(task.Url);
 
                     #region 强制 wait
@@ -143,14 +158,37 @@ namespace WebMonitorPlugin
                     task.JsCondition = TaskManager.Task(task.Name).JsCondition;
                     if (!string.IsNullOrEmpty(task.JsCondition))
                     {
-                        driver.ExecuteScript("window.WebMonitorPlugin = {};");
-                        driver.ExecuteScript("window.WebMonitorPlugin.JavaScriptConditionResult = false;");
+                        #region 废弃, 使用 localStorage.setItem 代替
+                        //driver.ExecuteScript("window.WebMonitorPlugin = {};");
+                        //driver.ExecuteScript("window.WebMonitorPlugin.JavaScriptConditionResult = false;"); 
+                        #endregion
 
-                        // 在 内部 改变 window.WebMonitorPlugin.JavaScriptConditionResult 的值
-                        driver.ExecuteScript(task.JsCondition);
+                        driver.ExecuteScript("localStorage.setItem(\"WebMonitorPlugin.JavaScriptConditionResult\", false)");
 
-                        string resultStr = driver.ExecuteScript($"return window.WebMonitorPlugin.JavaScriptConditionResult")?.ToString() ?? null;
+                        // 废弃: 在 内部 改变 window.WebMonitorPlugin.JavaScriptConditionResult 的值
+                        // 注意: 在 JsCondition 中执行刷新页面操作, 会导致 之前执行的 js 变量清空, 从而导致获取不到 JavaScriptConditionResult
+                        // localStorage 不会因为刷新页面清空, 因此推荐使用 localStorage.setItem("WebMonitorPlugin.JavaScriptConditionResult", true);
+                        try
+                        {
+                            driver.ExecuteScript(task.JsCondition);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("JavaScript 条件 执行出错:");
+                            Console.WriteLine(ex.ToString());
+                        }
+
+                        //string resultStr = driver.ExecuteScript($"return window.WebMonitorPlugin.JavaScriptConditionResult")?.ToString() ?? null;
+                        string resultStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.JavaScriptConditionResult\")")?.ToString() ?? null;
                         Console.WriteLine($"JavaScriptConditionResult: {resultStr}");
+
+                        #region 执行 JavaScript 条件后, 强制等待
+                        if (task.ForceWaitAfterJsConditionExecute > 0)
+                        {
+                            Thread.Sleep(TimeSpan.FromSeconds(task.ForceWaitAfterJsConditionExecute));
+                        }
+                        #endregion
+
                         if (!string.IsNullOrEmpty(resultStr))
                         {
                             bool result = Convert.ToBoolean(resultStr);
@@ -162,12 +200,6 @@ namespace WebMonitorPlugin
                                 #region 预订任务
                                 try
                                 {
-                                    #region 执行 JavaScript 条件后, 强制等待
-                                    if (task.ForceWaitAfterJsConditionExecute > 0)
-                                    {
-                                        Thread.Sleep(TimeSpan.FromSeconds(task.ForceWaitAfterJsConditionExecute));
-                                    }
-                                    #endregion
 
                                     #region 截图
                                     // 保存截图
