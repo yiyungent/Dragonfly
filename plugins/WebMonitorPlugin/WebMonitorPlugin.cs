@@ -120,17 +120,25 @@ namespace WebMonitorPlugin
 
                     #region 设置 Cookies
                     // TODO: 添加 Cookie 失败
-                    if (task.Cookies != null && task.Cookies.Count > 0)
+                    try
                     {
-                        foreach (var cookie in task.Cookies)
+                        if (task.Cookies != null && task.Cookies.Count > 0)
                         {
-                            driver.Manage().Cookies.AddCookie(new Cookie(
-                                name: cookie.Name,
-                                value: cookie.Value
-                            //domain: cookie.Domain,
-                            //path: cookie.Path, expiry: DateTime.Now.AddDays(1)
-                            ));
+                            foreach (var cookie in task.Cookies)
+                            {
+                                driver.Manage().Cookies.AddCookie(new Cookie(
+                                    name: cookie.Name,
+                                    value: cookie.Value
+                                //domain: cookie.Domain,
+                                //path: cookie.Path, expiry: DateTime.Now.AddDays(1)
+                                ));
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("设置 Cookies 失败:");
+                        Console.WriteLine(ex.ToString());
                     }
 # if DEBUG
                     Thread.Sleep(5000);
@@ -175,10 +183,18 @@ namespace WebMonitorPlugin
                         //driver.ExecuteScript("window.WebMonitorPlugin.JavaScriptConditionResult = false;"); 
                         #endregion
 
-                        #region 初始化 条件 设置
-                        driver.ExecuteScript("localStorage.setItem(\"WebMonitorPlugin.JavaScriptConditionResult\", false)");
-                        driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\", {task.ForceWaitAfterJsConditionExecute})");
-                        driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.Enable\", false)");
+                        #region 初始化 js条件 API 设置
+                        try
+                        {
+                            driver.ExecuteScript("localStorage.setItem(\"WebMonitorPlugin.JavaScriptConditionResult\", false)");
+                            driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\", {task.ForceWaitAfterJsConditionExecute})");
+                            driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.Enable\", false)");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("初始化 js条件 API 设置 失败:");
+                            Console.WriteLine(ex.ToString());
+                        }
                         #endregion
 
                         // 废弃: 在 内部 改变 window.WebMonitorPlugin.JavaScriptConditionResult 的值
@@ -195,11 +211,29 @@ namespace WebMonitorPlugin
                         }
 
                         //string resultStr = driver.ExecuteScript($"return window.WebMonitorPlugin.JavaScriptConditionResult")?.ToString() ?? null;
-                        string resultStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.JavaScriptConditionResult\")")?.ToString() ?? null;
+                        string resultStr = "";
+                        try
+                        {
+                            resultStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.JavaScriptConditionResult\")")?.ToString() ?? null;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("获取 WebMonitorPlugin.JavaScriptConditionResult 失败:");
+                            Console.WriteLine(ex.ToString());
+                        }
                         Console.WriteLine($"JavaScriptConditionResult: {resultStr}");
 
                         #region 执行 JavaScript 条件后, 强制等待
-                        string forceWaitAfterJsConditionExecuteStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\")")?.ToString() ?? null;
+                        string forceWaitAfterJsConditionExecuteStr = "0";
+                        try
+                        {
+                            forceWaitAfterJsConditionExecuteStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\")")?.ToString() ?? null;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("获取 WebMonitorPlugin.ForceWaitAfterJsConditionExecute 失败:");
+                            Console.WriteLine(ex.ToString());
+                        }
                         if (!string.IsNullOrEmpty(forceWaitAfterJsConditionExecuteStr) && int.TryParse(forceWaitAfterJsConditionExecuteStr, out int forceWaitAfterJsConditionExecute))
                         {
                             task.ForceWaitAfterJsConditionExecute = forceWaitAfterJsConditionExecute;
@@ -246,7 +280,16 @@ namespace WebMonitorPlugin
                                     task = TaskManager.Task(task.Name);
                                     if (task.Enable)
                                     {
-                                        string enableStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.Enable\")")?.ToString() ?? null;
+                                        string enableStr = "false";
+                                        try
+                                        {
+                                            enableStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.Enable\")")?.ToString() ?? null;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine("获取 WebMonitorPlugin.Enable 失败:");
+                                            Console.WriteLine(ex.ToString());
+                                        }
                                         if (!string.IsNullOrEmpty(enableStr) && bool.TryParse(enableStr, out bool enable))
                                         {
                                             task.Enable = enable;
