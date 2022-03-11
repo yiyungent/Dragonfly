@@ -115,17 +115,27 @@ namespace WebMonitorPlugin
 
                 try
                 {
-                    #region 设置 Cookie
-                    // 在 访问 Url 之前 设置 Cookie
-                    // Adds the cookie into current browser context
-                    //foreach (var cookie in task.Cookies)
-                    //{
+                    // 注意: 添加 Cookie 前必须先访问, 否则 OpenQA.Selenium.InvalidCookieDomainException: invalid cookie domain
+                    driver.Navigate().GoToUrl(task.Url);
 
-                    //}
-                    //driver.Manage().Cookies.AddCookie(new Cookie("key", "value"));
+                    #region 设置 Cookies
+                    // TODO: 添加 Cookie 失败
+                    if (task.Cookies != null && task.Cookies.Count > 0)
+                    {
+                        foreach (var cookie in task.Cookies)
+                        {
+                            driver.Manage().Cookies.AddCookie(new Cookie(
+                                name: cookie.Name,
+                                value: cookie.Value
+                                //domain: cookie.Domain,
+                                //path: cookie.Path, expiry: DateTime.Now.AddDays(1)
+                            ));
+                        }
+                    }
+                    Thread.Sleep(5000);
                     #endregion
 
-                    driver.Navigate().GoToUrl(task.Url);
+                    //driver.Navigate().Refresh();//.GoToUrl(task.Url);
 
                     #region 强制 wait
                     if (task.ForceWait > 0)
@@ -163,7 +173,11 @@ namespace WebMonitorPlugin
                         //driver.ExecuteScript("window.WebMonitorPlugin.JavaScriptConditionResult = false;"); 
                         #endregion
 
+                        #region 初始化 条件 设置
                         driver.ExecuteScript("localStorage.setItem(\"WebMonitorPlugin.JavaScriptConditionResult\", false)");
+                        driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\", {task.ForceWaitAfterJsConditionExecute})");
+                        driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.Enable\", false)");
+                        #endregion
 
                         // 废弃: 在 内部 改变 window.WebMonitorPlugin.JavaScriptConditionResult 的值
                         // 注意: 在 JsCondition 中执行刷新页面操作, 会导致 之前执行的 js 变量清空, 从而导致获取不到 JavaScriptConditionResult
@@ -183,21 +197,25 @@ namespace WebMonitorPlugin
                         Console.WriteLine($"JavaScriptConditionResult: {resultStr}");
 
                         #region 执行 JavaScript 条件后, 强制等待
+                        string forceWaitAfterJsConditionExecuteStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\")")?.ToString() ?? null;
+                        if (!string.IsNullOrEmpty(forceWaitAfterJsConditionExecuteStr) && int.TryParse(forceWaitAfterJsConditionExecuteStr, out int forceWaitAfterJsConditionExecute))
+                        {
+                            task.ForceWaitAfterJsConditionExecute = forceWaitAfterJsConditionExecute;
+                        }
                         if (task.ForceWaitAfterJsConditionExecute > 0)
                         {
                             Thread.Sleep(TimeSpan.FromSeconds(task.ForceWaitAfterJsConditionExecute));
                         }
                         #endregion
 
-                        if (!string.IsNullOrEmpty(resultStr))
+                        if (!string.IsNullOrEmpty(resultStr) && bool.TryParse(resultStr, out bool result))
                         {
-                            bool result = Convert.ToBoolean(resultStr);
                             if (result)
                             {
                                 // 条件成立
-                                Console.WriteLine($"JavaScript 条件 成立, 执行预订任务");
+                                Console.WriteLine($"JavaScript 条件 成立, 执行预定任务");
 
-                                #region 预订任务
+                                #region 预定任务
                                 try
                                 {
 
@@ -221,25 +239,31 @@ namespace WebMonitorPlugin
                                     // 条件成立, 执行通知
                                     TaskNotify(settings, task, screenshotBytes);
 
-                                    // 任务完成，设置为禁用
-                                    task.Enable = false;
+                                    // 任务完成
+                                    // 重新加载 task, 防止在任务执行期间 修改任务, 而这时再覆盖
+                                    task = TaskManager.Task(task.Name);
+                                    string enableStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.Enable\")")?.ToString() ?? null;
+                                    if (!string.IsNullOrEmpty(enableStr) && bool.TryParse(enableStr, out bool enable))
+                                    {
+                                        task.Enable = enable;
+                                    }
                                     TaskManager.AddTask(task);
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine("预订任务执行出错:");
+                                    Console.WriteLine("预定任务执行出错:");
                                     Console.WriteLine(ex.ToString());
                                 }
                                 #endregion
                             }
                             else
                             {
-                                Console.WriteLine($"JavaScript 条件 不成立, 放弃预订任务");
+                                Console.WriteLine($"JavaScript 条件 不成立, 放弃预定任务");
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"JavaScript 条件 不成立, 放弃预订任务");
+                            Console.WriteLine($"JavaScript 条件 不成立, 放弃预定任务");
                         }
                     }
                     #endregion

@@ -42,7 +42,7 @@ namespace WebMonitorPlugin.Infrastructure
             string taskJsonStr = System.IO.File.ReadAllText(taskFilePath, Encoding.UTF8);
             TaskModel task = Utils.JsonUtil.JsonStr2Obj<TaskModel>(taskJsonStr);
             string jsConditionFilePath = System.IO.Path.Combine(taskDir, "jsCondition.js");
-            task.JsCondition = System.IO.File.ReadAllText(jsConditionFilePath,Encoding.UTF8);
+            task.JsCondition = System.IO.File.ReadAllText(jsConditionFilePath, Encoding.UTF8);
 
             return task;
         }

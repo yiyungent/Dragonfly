@@ -21,6 +21,8 @@ namespace WebMonitorPlugin.RequestModels
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
 
+        public string Cookies { get; set; }
+
         public bool Enable { get; set; }
     }
 }

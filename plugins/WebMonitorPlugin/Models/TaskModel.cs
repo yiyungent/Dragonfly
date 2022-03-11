@@ -6,8 +6,8 @@ namespace WebMonitorPlugin.Models
 {
     public class TaskModel
     {
-        public string Name { get;  set; }
-        public string JsCondition { get;  set; }
+        public string Name { get; set; }
+        public string JsCondition { get; set; }
         public string Message { get; set; }
         public string Url { get; set; }
         /// <summary>
@@ -21,6 +21,19 @@ namespace WebMonitorPlugin.Models
         public int WindowWidth { get; set; }
         public int WindowHeight { get; set; }
 
+        public List<CookieModel> Cookies { get; set; }
+
         public bool Enable { get; set; }
+
+        public class CookieModel
+        {
+            public string Name { get; set; }
+            public string Value { get; set; }
+
+            public string Domain { get; set; }
+
+            public string Path { get; set; }
+
+        }
     }
 }

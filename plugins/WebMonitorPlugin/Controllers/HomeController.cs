@@ -91,6 +91,7 @@ namespace WebMonitorPlugin.Controllers
                     WindowHeight = requestModel.WindowHeight,
                     JsCondition = requestModel.JsCondition,
                     ForceWaitAfterJsConditionExecute = requestModel.ForceWaitAfterJsConditionExecute,
+                    Cookies = ConvertToCookieList(requestModel.Cookies),
                     Enable = requestModel.Enable
                 });
 
@@ -124,6 +125,7 @@ namespace WebMonitorPlugin.Controllers
                             .Replace("{{WindowWidth}}", task.WindowWidth.ToString())
                             .Replace("{{WindowHeight}}", task.WindowHeight.ToString())
                             .Replace("{{ForceWaitAfterJsConditionExecute}}", task.ForceWaitAfterJsConditionExecute.ToString())
+                            .Replace("{{Cookies}}", ConvertToCookiesStr(task.Cookies))
                             .Replace("{{Enable}}", task.Enable ? "true" : "false");
 
             return await Task.FromResult(Content(rtnStr, "text/html; charset=utf-8"));
@@ -158,6 +160,7 @@ namespace WebMonitorPlugin.Controllers
                     WindowHeight = requestModel.WindowHeight,
                     JsCondition = requestModel.JsCondition,
                     ForceWaitAfterJsConditionExecute = requestModel.ForceWaitAfterJsConditionExecute,
+                    Cookies = ConvertToCookieList(requestModel.Cookies),
                     Enable = requestModel.Enable
                 });
 
@@ -196,6 +199,55 @@ namespace WebMonitorPlugin.Controllers
             return await Task.FromResult(responseModel);
         }
 
+
+        private List<TaskModel.CookieModel> ConvertToCookieList(string cookiesStr)
+        {
+            string[] cookieStrArray = cookiesStr.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var cookieList = new List<TaskModel.CookieModel>();
+            foreach (var cookieStr in cookieStrArray)
+            {
+                // cookieStr: name=xxx;value=xxx;domain=.bilibili.com;path=/
+                string[] cookiePairs = cookieStr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                var cookieModel = new TaskModel.CookieModel();
+                foreach (var cookiePair in cookiePairs)
+                {
+                    // cookiePair: name=xxx
+                    string[] keyValue = cookiePair.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                    switch (keyValue[0])
+                    {
+                        case "name":
+                            cookieModel.Name = keyValue[1];
+                            break;
+                        case "value":
+                            cookieModel.Value = keyValue[1];
+                            break;
+                        case "domain":
+                            cookieModel.Domain = keyValue[1];
+                            break;
+                        case "path":
+                            cookieModel.Path = keyValue[1];
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                cookieList.Add(cookieModel);
+            }
+
+            return cookieList;
+        }
+
+
+        private string ConvertToCookiesStr(List<TaskModel.CookieModel> cookieModels)
+        {
+            StringBuilder cookiesStrSb = new StringBuilder();
+            foreach (var cookie in cookieModels)
+            {
+                cookiesStrSb.AppendLine($"name={cookie.Name};value={cookie.Value};domain={cookie.Domain};path={cookie.Path}");
+            }
+
+            return cookiesStrSb.ToString();
+        }
 
     }
 }
