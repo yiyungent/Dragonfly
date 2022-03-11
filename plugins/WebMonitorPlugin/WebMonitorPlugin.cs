@@ -127,12 +127,14 @@ namespace WebMonitorPlugin
                             driver.Manage().Cookies.AddCookie(new Cookie(
                                 name: cookie.Name,
                                 value: cookie.Value
-                                //domain: cookie.Domain,
-                                //path: cookie.Path, expiry: DateTime.Now.AddDays(1)
+                            //domain: cookie.Domain,
+                            //path: cookie.Path, expiry: DateTime.Now.AddDays(1)
                             ));
                         }
                     }
+# if DEBUG
                     Thread.Sleep(5000);
+#endif
                     #endregion
 
                     //driver.Navigate().Refresh();//.GoToUrl(task.Url);
@@ -242,12 +244,15 @@ namespace WebMonitorPlugin
                                     // 任务完成
                                     // 重新加载 task, 防止在任务执行期间 修改任务, 而这时再覆盖
                                     task = TaskManager.Task(task.Name);
-                                    string enableStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.Enable\")")?.ToString() ?? null;
-                                    if (!string.IsNullOrEmpty(enableStr) && bool.TryParse(enableStr, out bool enable))
+                                    if (task.Enable)
                                     {
-                                        task.Enable = enable;
+                                        string enableStr = driver.ExecuteScript($"return localStorage.getItem(\"WebMonitorPlugin.Enable\")")?.ToString() ?? null;
+                                        if (!string.IsNullOrEmpty(enableStr) && bool.TryParse(enableStr, out bool enable))
+                                        {
+                                            task.Enable = enable;
+                                        }
+                                        TaskManager.AddTask(task);
                                     }
-                                    TaskManager.AddTask(task);
                                 }
                                 catch (Exception ex)
                                 {
