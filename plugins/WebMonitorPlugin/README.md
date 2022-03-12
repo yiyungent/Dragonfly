@@ -1,6 +1,6 @@
 
 
-# 入门
+# 基础
 
 - [任务控制台](/plugins/WebMonitorPlugin)
 
@@ -8,6 +8,20 @@
 - [设置](/plugincore/admin/index.html#/plugins/settings/WebMonitorPlugin) 里配置提醒通知
 
 
+
+# 通知
+
+> PS: 通知属于 预定任务
+
+## Telegram 通知
+
+> Telegram 通知通过 Telegram bot 机器人实现
+
+- `Token`: Telegram 机器人用于访问 HTTP API 的 token, 通过 [@BotFather](https://t.me/BotFather) 创建机器人获取，必填。
+- `ChatId`: 接收消息对象的 `chat_id`, 可以是单一用户、频道、群组，通过 [@userinfobot](https://t.me/userinfobot) 获取，必填。
+- `Enable`: 是否启用 Telegram 通知, 启用填 `true`, 禁用填 `false`, 必填
+
+> PS: 目前在发送 Telegram 通知时, 还会附上一张目标 Url 网页截图
 
 # JavaScript 条件 API
 
@@ -38,7 +52,7 @@ var yourStorageData = localStorage.getItem("WebMonitorPlugin.Storage.YourStorage
 # 执行流程
 
 `浏览器打开 Url` -> `强制等待` -> `设置浏览器窗口大小` -> `初始化 JavaScript 条件 API` -> `浏览器在当前页面 执行 JavaScript 条件` 
--> `从 条件API 中获取结果` -> `强制等待` -> `从 JavaScriptConditionResult 获取是否执行 预定(通知)任务`
+-> `从 条件API 中获取结果` -> `强制等待` -> `JavaScript 条件 API 回调`  -> `从 JavaScriptConditionResult 获取是否执行 预定(通知)任务`
 
 `若执行预定(通知)任务` -> `网页截图` -> `执行通知`
 
