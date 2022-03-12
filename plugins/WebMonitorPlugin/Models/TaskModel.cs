@@ -23,7 +23,16 @@ namespace WebMonitorPlugin.Models
 
         public List<CookieModel> Cookies { get; set; }
 
+        public List<StorageItemModel> Storage { get; set; }
+
         public bool Enable { get; set; }
+
+        public class StorageItemModel
+        {
+            public string Key { get; set; }
+
+            public string Value { get; set; }
+        }
 
         public class CookieModel
         {

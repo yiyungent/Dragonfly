@@ -25,6 +25,12 @@ localStorage.setItem("WebMonitorPlugin.ForceWaitAfterJsConditionExecute", false)
 // 默认 false, 即 当预定(通知)任务 成功后, 本任务禁用
 localStorage.setItem("WebMonitorPlugin.Enable", false);
 
+// 永久存储, 可用于监控网页变化用（将之前的信息存储起来，然后下次访问时进行对比）
+// 注意: 范围仅为当前任务
+localStorage.setItem("WebMonitorPlugin.Storage.YourStorageKey", "your data");
+// 上次 JavaScript 条件执行中设置后，下次即可通过下方使用
+var yourStorageData = localStorage.getItem("WebMonitorPlugin.Storage.YourStorageKey");
+
 // 更多 API 蓄力中...
 ```
 
@@ -43,7 +49,7 @@ localStorage.setItem("WebMonitorPlugin.Enable", false);
 # 例子
 
 
-## 百度贴吧自动签到并通知 (使用 Cookie 免账号密码登录)
+## 百度贴吧自动签到并通知 (使用 Cookie 免账号密码登录) ( 不建议, 目前 Cookie 还存在一些问题 )
 
 > 首先在本机上登录百度，F12 获取 名为 `BDUSS` 的 Cookie, 这个就是用于维持百度登录状态的关键
 
@@ -94,3 +100,54 @@ localStorage.setItem("WebMonitorPlugin.Enable", true);
 > 效果图
 
 > 暂无
+
+
+## B站 动态更新 提醒 (强烈推荐)
+
+> 目标 Url:   
+> https://space.bilibili.com/25057459/dynamic
+
+> 浏览器-宽: 1280
+
+> 强制等待: 5
+
+> JavaScript 条件
+
+```javascript
+// localStorage.setItem("WebMonitorPlugin.JavaScriptConditionResult", false); 
+// 通过此方法来确定本次任务 是否达成条件, 默认 false 
+// 下面写你的业务逻辑
+
+var coententDom = document.querySelector(".content");
+var firstDynamicDom = null;
+
+for (var i = 0; i < coententDom.childNodes.length; i++) {
+    var node = coententDom.childNodes[i];
+    if (node.nodeName == "DIV" && node.className != "feed-title" && node.className != "first-card-with-title") {
+        // 除了置顶的第一条动态
+        firstDynamicDom = node;
+        break;
+    }
+}
+
+var contentDom = firstDynamicDom.querySelector(".content-full") || firstDynamicDom.querySelector(".card-content .post-content .content");
+var newFirstDynamicText = contentDom?.innerText??"";
+
+
+var oldFirstDynamicText = localStorage.getItem("WebMonitorPlugin.Storage.FirstDynamicText");
+
+if (oldFirstDynamicText != newFirstDynamicText) {
+    // 动态有更新
+    localStorage.setItem("WebMonitorPlugin.JavaScriptConditionResult", true);    
+} else {
+    localStorage.setItem("WebMonitorPlugin.JavaScriptConditionResult", false);
+}
+
+
+// 保存最新的动态数据
+localStorage.setItem("WebMonitorPlugin.Storage.FirstDynamicText", newFirstDynamicText);
+
+
+// 始终启用
+localStorage.setItem("WebMonitorPlugin.Enable", true);
+```

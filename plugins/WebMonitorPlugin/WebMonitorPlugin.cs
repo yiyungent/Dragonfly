@@ -16,6 +16,7 @@ using OpenQA.Selenium;
 using WebMonitorPlugin.Infrastructure;
 using WebMonitorPlugin.Models;
 using System.Collections.Generic;
+using System.Text;
 
 namespace WebMonitorPlugin
 {
@@ -189,6 +190,17 @@ namespace WebMonitorPlugin
                             driver.ExecuteScript("localStorage.setItem(\"WebMonitorPlugin.JavaScriptConditionResult\", false)");
                             driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.ForceWaitAfterJsConditionExecute\", {task.ForceWaitAfterJsConditionExecute})");
                             driver.ExecuteScript($"localStorage.setItem(\"WebMonitorPlugin.Enable\", false)");
+
+                            if (task.Storage != null && task.Storage.Count > 0)
+                            {
+                                StringBuilder storageSb = new StringBuilder();
+                                foreach (var keyValuePair in task.Storage)
+                                {
+                                    // 传入上次执行 JavaScript 条件 保存的数据
+                                    storageSb.AppendLine($"localStorage.setItem(\"{keyValuePair.Key}\", \"{keyValuePair.Value}\");");
+                                }
+                                driver.ExecuteScript(storageSb.ToString());
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -203,6 +215,47 @@ namespace WebMonitorPlugin
                         try
                         {
                             driver.ExecuteScript(task.JsCondition);
+
+                            #region 仅在 JavaScript 条件执行成功后，再保存数据
+                            try
+                            {
+                                string getAllStorageJs = @"var len = localStorage.length;
+                                                       var arr = [];
+                                                       for(var i = 0; i < len; i++) {
+                                                            var getKey = localStorage.key(i);
+                                                            if (getKey.startsWith('WebMonitorPlugin.Storage.')) {
+                                                                var getVal = localStorage.getItem(getKey);
+                                                                arr.push({
+                                                                    'Key': getKey,
+                                                                    'Value': getVal
+                                                                });
+                                                            }
+                                                       }
+                                                       return JSON.stringify(arr);";
+                                string allStorageJsonStr = driver.ExecuteScript(getAllStorageJs)?.ToString() ?? null;
+
+                                if (!string.IsNullOrEmpty(allStorageJsonStr))
+                                {
+                                    try
+                                    {
+                                        var temp = Utils.JsonUtil.JsonStr2Obj<List<TaskModel.StorageItemModel>>(allStorageJsonStr);
+
+                                        task.Storage = temp;
+                                        TaskManager.AddTask(task);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.ToString());
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("保存数据 失败:");
+                                Console.WriteLine(ex.ToString());
+                            }
+
+                            #endregion
                         }
                         catch (Exception ex)
                         {
