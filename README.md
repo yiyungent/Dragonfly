@@ -118,7 +118,7 @@ dotnet add package Dragonfly.Sdk
 
 
 - [yiyungent/WebScreenshot](https://github.com/yiyungent/WebScreenshot)
-
+- [yiyungent/PluginCore](https://github.com/yiyungent/PluginCore)
 
 
 ## Donate
