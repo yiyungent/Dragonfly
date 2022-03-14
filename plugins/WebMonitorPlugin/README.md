@@ -132,6 +132,9 @@ localStorage.setItem("WebMonitorPlugin.Enable", true);
 // 通过此方法来确定本次任务 是否达成条件, 默认 false 
 // 下面写你的业务逻辑
 
+// 始终启用
+localStorage.setItem("WebMonitorPlugin.Enable", true);
+
 var coententDom = document.querySelector(".content");
 var firstDynamicDom = null;
 
@@ -144,11 +147,13 @@ for (var i = 0; i < coententDom.childNodes.length; i++) {
     }
 }
 
-var contentDom = firstDynamicDom.querySelector(".content-full") || firstDynamicDom.querySelector(".card-content .post-content .content");
-var newFirstDynamicText = contentDom?.innerText??"";
-
-
 var oldFirstDynamicText = localStorage.getItem("WebMonitorPlugin.Storage.FirstDynamicText");
+
+var contentDom = firstDynamicDom.querySelector(".content-full") || firstDynamicDom.querySelector(".card-content .post-content .content");
+// 注意: 当没有获取到时, 就使用 旧数据
+// 有时候可能会由于加载原因, 而导致没有获取到数据
+var newFirstDynamicText = contentDom?.innerText ?? oldFirstDynamicText;
+
 
 if (oldFirstDynamicText != newFirstDynamicText) {
     // 动态有更新
@@ -160,8 +165,4 @@ if (oldFirstDynamicText != newFirstDynamicText) {
 
 // 保存最新的动态数据
 localStorage.setItem("WebMonitorPlugin.Storage.FirstDynamicText", newFirstDynamicText);
-
-
-// 始终启用
-localStorage.setItem("WebMonitorPlugin.Enable", true);
 ```
