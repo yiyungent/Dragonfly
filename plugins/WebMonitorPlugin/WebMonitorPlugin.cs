@@ -263,6 +263,7 @@ namespace WebMonitorPlugin
                             Console.WriteLine(ex.ToString());
                         }
 
+                        #region 获取 JavaScriptConditionResult
                         //string resultStr = driver.ExecuteScript($"return window.WebMonitorPlugin.JavaScriptConditionResult")?.ToString() ?? null;
                         string resultStr = "";
                         try
@@ -275,6 +276,7 @@ namespace WebMonitorPlugin
                             Console.WriteLine(ex.ToString());
                         }
                         Console.WriteLine($"JavaScriptConditionResult: {resultStr}");
+                        #endregion
 
                         #region 执行 JavaScript 条件后, 强制等待
                         string forceWaitAfterJsConditionExecuteStr = "0";
@@ -297,6 +299,7 @@ namespace WebMonitorPlugin
                         }
                         #endregion
 
+                        #region 是否执行预订任务
                         if (!string.IsNullOrEmpty(resultStr) && bool.TryParse(resultStr, out bool result))
                         {
                             if (result)
@@ -366,8 +369,41 @@ namespace WebMonitorPlugin
                         {
                             Console.WriteLine($"JavaScript 条件 不成立, 放弃预定任务");
                         }
+                        #endregion
+
+                        #region TgMessageList
+                        string tgMessageListStr = "";
+                        try
+                        {
+                            tgMessageListStr = driver.ExecuteScript("return localStorage.getItem(\"WebMonitorPlugin.TgMessageList\")")?.ToString() ?? null;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("获取 TgMessageList 失败:");
+                            Console.WriteLine(ex.ToString());
+                        }
+                        string[] tgMessageList = null;
+                        if (!string.IsNullOrEmpty(tgMessageListStr))
+                        {
+                            try
+                            {
+                                tgMessageList = Utils.JsonUtil.JsonStr2Obj<string[]>(tgMessageListStr);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("解析 TgMessageList 失败, 可能格式错误:");
+                                Console.WriteLine(ex.ToString());
+                            }
+                        }
+                        if (tgMessageList != null && tgMessageList.Length > 0)
+                        {
+                            TgMessageList(settings, tgMessageList);
+                        }
+                        #endregion
                     }
                     #endregion
+
+
                 }
                 catch (Exception ex)
                 {
@@ -384,6 +420,41 @@ namespace WebMonitorPlugin
 
         }
 
+
+        public void TgMessageList(SettingsModel settings, string[] messages)
+        {
+            #region Telegram
+            if (settings.Telegram != null)
+            {
+                if (settings.Telegram.Enable)
+                {
+                    string chatId = settings.Telegram.ChatId;
+                    var botClient = new TelegramBotClient(settings.Telegram.Token);
+                    // https://core.telegram.org/bots/api#formatting-options
+
+                    foreach (var message in messages)
+                    {
+                        try
+                        {
+                            Message messageModel = botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: message,
+                                parseMode: ParseMode.Html
+                                //parseMode: ParseMode.MarkdownV2,
+                                //disableNotification: true,
+                                ).Result;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("发送 TgMessageList 失败:");
+                            Console.WriteLine(message);
+                            Console.WriteLine(ex.ToString());
+                        }
+                    }
+                }
+            }
+            #endregion
+        }
 
         public void TaskNotify(SettingsModel settings, TaskModel task, byte[] screenshotBytes)
         {

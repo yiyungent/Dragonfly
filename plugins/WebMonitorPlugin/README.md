@@ -45,6 +45,12 @@ localStorage.setItem("WebMonitorPlugin.Storage.YourStorageKey", "your data");
 // 上次 JavaScript 条件执行中设置后，下次即可通过下方使用
 var yourStorageData = localStorage.getItem("WebMonitorPlugin.Storage.YourStorageKey");
 
+// 添加额外 Telegram 通知消息
+// 此消息 不受 JavaScriptConditionResult 影响, 只要不为空, 就会尝试发送, 默认为空数组 "[]"
+// 注意: 每条消息只能使用 Telegram 支持的 HTML 格式标签,大多标签并不支持, 参考: https://core.telegram.org/bots/api#formatting-options
+var tgMessage = ["消息1","消息2"];
+localStorage.setItem("WebMonitorPlugin.TgMessageList", JSON.stringify(tgMessage));
+
 // 更多 API 蓄力中...
 ```
 
