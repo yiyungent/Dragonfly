@@ -22,6 +22,12 @@ ASP.NET Core + Selenium 实现 Web 自动化平台
 - **开箱即用** - 完全打包好的 `Selenium` 环境
 - **易扩展** - 集成 `PluginCore`, 插件化架构
 
+> **注意** : **WebMonitorPlugin** 已可在新平台 [KnifeHub](https://github.com/yiyungent/KnifeHub) 可用, 所有功能已完成移植, 本项目 **Dragonfly** 正式归档, 停止开发!
+
+> **注意** : **WebMonitorPlugin** 已可在新平台 [KnifeHub](https://github.com/yiyungent/KnifeHub) 可用, 所有功能已完成移植, 本项目 **Dragonfly** 正式归档, 停止开发!
+
+> **注意** : **WebMonitorPlugin** 已可在新平台 [KnifeHub](https://github.com/yiyungent/KnifeHub) 可用, 所有功能已完成移植, 本项目 **Dragonfly** 正式归档, 停止开发!
+
 
 ## Screenshots
 
